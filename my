@@ -1,0 +1,5 @@
+eksctl create cluster \
+  --name my-cluster \
+  --region us-west-1 \
+  --nodes 2 \
+  --node-type t2.micro\

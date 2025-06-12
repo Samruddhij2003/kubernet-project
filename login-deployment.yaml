@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: login-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: login-app
+  template:
+    metadata:
+      labels:
+        app: login-app
+    spec:
+      containers:
+      - name: login-app
+        image: kelvi17/login-register:login
+        ports:
+        - containerPort: 3000
+        env:
+          - name: DB_HOST
+            value: mysql-service.default.svc.cluster.local
+          - name: DB_USER
+            value: root
+          - name: DB_PASSWORD
+            value: Admin@2003
+          - name: DB_NAME
+            value: user_auth
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: login-service
+spec:
+  selector:
+    app: login-app
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+  type: ClusterIP
